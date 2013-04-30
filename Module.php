@@ -28,7 +28,7 @@ class Module
         $this->attachListeners($event);
     }
 
-    protected function attachListeners(EventInterface $event);
+    protected function attachListeners(EventInterface $event)
     {
         $request = $event->getRequest();
         $application = $event->getApplication();
