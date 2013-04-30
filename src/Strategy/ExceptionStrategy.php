@@ -3,6 +3,8 @@
 namespace BlooperReel\Strategy;
 
 use \Zend\Stdlib\ResponseInterface;
+use \Zend\Http\Response;
+use \Zend\Mvc\Application;
 use \Zend\Mvc\MvcEvent;
 use \Zend\Mvc\View\Http\ExceptionStrategy as ZendExceptionStrategy;
 use \Zend\ServiceManager\ServiceLocatorAwareInterface;

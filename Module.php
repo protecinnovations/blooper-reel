@@ -19,11 +19,13 @@ class Module
 
         $this->whoops = $serviceManager->get('Whoops');
 
-        $PrettyPageHandler = $serviceManager->get('BlooperReel\PrettyPageHandler');
+        $prettyPageHandler = $serviceManager->get('BlooperReel\PrettyPageHandler');
+
         $this->config = $serviceManager->get('config');
 
-        $this->whoops->register();
-        $this->whoops->pushHandler($events);
+        //$this->whoops->register();
+        $this->whoops->pushHandler($prettyPageHandler);
+
 
         $this->attachListeners($event);
     }
@@ -38,13 +40,14 @@ class Module
         if ($request instanceof ConsoleRequest) {
             return;
         }
-
         $exceptionStrategy = $serviceManager->get('BlooperReel\ExceptionStrategy');
 
         $exceptionStrategy->attach($eventManager);
 
         //Detach default ExceptionStrategy
-        $services->get('Zend\Mvc\View\Http\ExceptionStrategy')->detach($eventManager);
+        $serviceManager->get('ExceptionStrategy')->detach($eventManager);
+
+
     }
 
     public function getServiceConfig()
@@ -70,5 +73,9 @@ class Module
                 ),
             ),
         );
+    }
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
     }
 }
