@@ -1,0 +1,27 @@
+{
+    "name": "protec/blooper-reel",
+    "description": "Zend Framework 2 Module that provides coherent Error Handling",
+    "type": "library",
+    "keywords": [
+        "whoops",
+        "error",
+        "zf2",
+        "module"
+    ],
+    "homepage": "http://github.com/protecinnovations/blooper-reel",
+    "authors": [
+        {
+            "name": "Martin Meredith",
+            "email": "martinmeredith@protecinnovations.co.uk"
+        }
+    ],
+    "require": {
+        "filp/whoops": "1,*",
+        "php": ">= 5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "BlooperReel\\": "src/"
+        }
+    }
+}
