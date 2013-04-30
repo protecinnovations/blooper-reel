@@ -36,7 +36,7 @@ class Module
         $eventManager = $application->getEventManager();
 
         if ($request instanceof ConsoleRequest) {
-            return
+            return;
         }
 
         $exceptionStrategy = $serviceManager->get('BlooperReel\ExceptionStrategy');
