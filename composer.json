@@ -2,6 +2,7 @@
     "name": "protec/blooper-reel",
     "description": "Zend Framework 2 Module that provides coherent Error Handling",
     "type": "library",
+    "licence": "BSD",
     "keywords": [
         "whoops",
         "error",
