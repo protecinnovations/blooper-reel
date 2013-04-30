@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "filp/whoops": "1,*",
+        "filp/whoops": "1.*",
         "php": ">= 5.4"
     },
     "autoload": {
