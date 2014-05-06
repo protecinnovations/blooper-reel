@@ -1,51 +1,31 @@
 <?php
 
-namespace BlooperReel\Strategy;
+namespace Protec\BlooperReel\Strategy;
 
-use \Zend\Stdlib\ResponseInterface;
-use \Zend\Http\Response;
-use \Zend\Mvc\Application;
-use \Zend\Mvc\MvcEvent;
-use \Zend\Mvc\View\Http\ExceptionStrategy as ZendExceptionStrategy;
-use \Zend\ServiceManager\ServiceLocatorAwareInterface;
-use \Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Http\Response;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\View\Http\ExceptionStrategy as ZendExceptionStrategy;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Stdlib\ResponseInterface;
 
-
-
-// TODO: use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-
+/**
+ * ExceptionStrategy
+ *
+ * @package   Protec\BlooperReel\Strategy
+ * @author    Protec Innovations <support@protecinnovations.co.uk>
+ * @copyright 2013 - 2014 Protec Innovations
+ */
 class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorAwareInterface
 {
-    // TODO: use ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
 
     /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator = null;
-
-    /**
-     * Set service locator
+     * prepareExceptionViewModel
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param \Zend\Mvc\MvcEvent $event
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
     public function prepareExceptionViewModel(MvcEvent $event)
     {
         $error = $event->getError();

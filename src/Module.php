@@ -1,35 +1,47 @@
 <?php
+
+namespace Protec\BlooperReel;
+
+use Zend\EventManager\EventInterface;
+
 /**
- * ZF2 Integration for Whoops
- * @author Protec Innovations <dev@protecinnovations.co.uk>
+ * Module
+ *
+ * @package   Protec\BlooperReel
+ * @author    Protec Innovations <support@protecinnovations.co.uk>
+ * @copyright 2013 - 2014 Protec Innovations
  */
-
-namespace BlooperReel;
-
-use \Zend\EventManager\EventInterface;
-
 class Module
 {
     protected $whoops;
     protected $config = array();
 
+    /**
+     * onBootstrap
+     *
+     * @param \Zend\EventManager\EventInterface $event
+     */
     public function onBootstrap(EventInterface $event)
     {
         $serviceManager = $event->getApplication()->getServiceManager();
 
         $this->whoops = $serviceManager->get('Whoops');
 
-        $prettyPageHandler = $serviceManager->get('BlooperReel\PrettyPageHandler');
+        $prettyPageHandler = $serviceManager->get('\Protec\BlooperReel\PrettyPageHandler');
 
         $this->config = $serviceManager->get('config');
 
         //$this->whoops->register();
         $this->whoops->pushHandler($prettyPageHandler);
 
-
         $this->attachListeners($event);
     }
 
+    /**
+     * attachListeners
+     *
+     * @param \Zend\EventManager\EventInterface $event
+     */
     protected function attachListeners(EventInterface $event)
     {
         $request = $event->getRequest();
@@ -40,7 +52,7 @@ class Module
         if ($request instanceof ConsoleRequest) {
             return;
         }
-        $exceptionStrategy = $serviceManager->get('BlooperReel\ExceptionStrategy');
+        $exceptionStrategy = $serviceManager->get('\Protec\BlooperReel\ExceptionStrategy');
 
         $exceptionStrategy->attach($eventManager);
 
@@ -50,30 +62,30 @@ class Module
 
     }
 
+    /**
+     * getServiceConfig
+     *
+     * @return array
+     */
     public function getServiceConfig()
     {
         return [
             'invokables' => [
                 'Whoops' => 'Whoops\Run',
-                'Whoops\PrettyPageHandler' => 'Whoops\Handler\PrettyPageHandler',
-                'BlooperReel\ExceptionStrategy' => 'BlooperReel\Strategy\ExceptionStrategy'
+                'Whoops\PrettyPageHandler' => '\Whoops\Handler\PrettyPageHandler',
+                '\Protec\BlooperReel\ExceptionStrategy' => '\Protec\BlooperReel\Strategy\ExceptionStrategy'
             ],
             'factories' => [
-                'BlooperReel\PrettyPageHandler' => 'BlooperReel\PrettyPageHandler\Factory'
+                '\Protec\BlooperReel\PrettyPageHandler' => '\Protec\BlooperReel\PrettyPageHandler\Factory'
             ]
         ];
     }
 
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
+    /**
+     * getConfig
+     *
+     * @return array
+     */
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
