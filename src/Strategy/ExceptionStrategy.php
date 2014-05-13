@@ -120,19 +120,6 @@ class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorA
      */
     protected function generateUniqueId()
     {
-        if (isset($_SERVER['SERVER_ADDR'])) {
-            // This should prevent clashes where something happens on
-            // multiple servers simultaneously.
-            $longip = ip2long($_SERVER['SERVER_ADDR']);
-            $hex_ip = base_convert($longip, 10, 16);
-
-            $uniqid = uniqid($hex_ip);
-        } else {
-            $uniqid = uniqid();
-        }
-
-        // Convert to [0-9a-z] rather than hex.
-        return base_convert($uniqid, 16, 36);
-
+        return base_convert(uniqid(), 16, 36);
     }
 }
