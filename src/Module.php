@@ -71,12 +71,16 @@ class Module
     {
         return [
             'invokables' => [
+                '\Protec\BlooperReel\Strategy\ExceptionStrategy' => '\Protec\BlooperReel\Strategy\ExceptionStrategy',
+                '\Protec\BlooperReel\Recorder\DummyRecorder' => '\Protec\BlooperReel\Recorder\DummyRecorder',
                 'Whoops' => 'Whoops\Run',
                 'Whoops\PrettyPageHandler' => '\Whoops\Handler\PrettyPageHandler',
-                '\Protec\BlooperReel\ExceptionStrategy' => '\Protec\BlooperReel\Strategy\ExceptionStrategy'
+
             ],
             'factories' => [
-                '\Protec\BlooperReel\PrettyPageHandler' => '\Protec\BlooperReel\PrettyPageHandler\Factory'
+                '\Protec\BlooperReel\ExceptionStrategy' => '\Protec\BlooperReel\Strategy\ExceptionStrategyFactory',
+                '\Protec\BlooperReel\PrettyPageHandler' => '\Protec\BlooperReel\PrettyPageHandler\Factory',
+                '\Protec\BlooperReel\Recorder' => '\Protec\BlooperReel\Recorder\RecorderFactory',
             ]
         ];
     }
@@ -88,6 +92,6 @@ class Module
      */
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return include __DIR__ . '/../config/module.config.php';
     }
 }
