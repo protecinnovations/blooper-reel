@@ -17,9 +17,10 @@ use Zend\View\Model\ViewModel;
  *
  * @package   Protec\BlooperReel\Strategy
  * @author    Protec Innovations <support@protecinnovations.co.uk>
- * @copyright 2013 - 2014 Protec Innovations
+ * @copyright 2013 - 2015 Protec Innovations
  */
-class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorAwareInterface
+class ExceptionStrategy extends ZendExceptionStrategy implements
+    ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -27,29 +28,6 @@ class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorA
      * @var \Protec\BlooperReel\Recorder\RecorderInterface $recorder
      */
     protected $recorder = null;
-
-    /**
-     * getRecorder
-     *
-     * @return \Protec\BlooperReel\Recorder\RecorderInterface
-     */
-    public function getRecorder()
-    {
-        return $this->recorder;
-    }
-
-    /**
-     * setRecorder
-     *
-     * @param \Protec\BlooperReel\Recorder\RecorderInterface $recorder
-     * @return $this
-     */
-    public function setRecorder(RecorderInterface $recorder)
-    {
-        $this->recorder = $recorder;
-
-        return $this;
-    }
 
     /**
      * prepareExceptionViewModel
@@ -79,7 +57,9 @@ class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorA
                 $whoops->writeToOutput(false);
                 $whoops->allowQuit(false);
 
-                $whoops_output = $whoops->handleException($event->getParam('exception'));
+                $whoops_output = $whoops->handleException(
+                    $event->getParam('exception')
+                );
 
                 $this->getRecorder()->save($identifier, $whoops_output);
 
@@ -103,10 +83,23 @@ class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorA
                     $response = new HttpResponse();
                     $response->setStatusCode(500);
                     $event->setResponse($response);
-                } else {
+                } elseif ($response instanceof HttpResponse) {
                     $statusCode = $response->getStatusCode();
                     if ($statusCode === 200) {
                         $response->setStatusCode(500);
+                    }
+                } else {
+                    $exception = $event->getParam('exception');
+                    if (isset($exception->xdebug_message)) {
+                        $response->setContent($exception->xdebug_message);
+                    } else {
+                        $response->setContent(
+                            sprintf(
+                                "%s\n\n%s",
+                                $exception->getMessage(),
+                                $exception->getTraceAsString()
+                            )
+                        );
                     }
                 }
                 break;
@@ -121,5 +114,29 @@ class ExceptionStrategy extends ZendExceptionStrategy implements ServiceLocatorA
     protected function generateUniqueId()
     {
         return base_convert(uniqid(), 16, 36);
+    }
+
+    /**
+     * getRecorder
+     *
+     * @return \Protec\BlooperReel\Recorder\RecorderInterface
+     */
+    public function getRecorder()
+    {
+        return $this->recorder;
+    }
+
+    /**
+     * setRecorder
+     *
+     * @param \Protec\BlooperReel\Recorder\RecorderInterface $recorder
+     *
+     * @return $this
+     */
+    public function setRecorder(RecorderInterface $recorder)
+    {
+        $this->recorder = $recorder;
+
+        return $this;
     }
 }

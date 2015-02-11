@@ -11,7 +11,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package \Protec\BlooperReel\Strategy
  * @author Protec Innovations <support@protecinnovations.co.uk>
- * @copyright 2014 Protec Innovations
+ * @copyright 2014 - 2015 Protec Innovations
  */
 class ExceptionStrategyFactory implements FactoryInterface
 {

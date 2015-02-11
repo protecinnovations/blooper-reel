@@ -9,7 +9,7 @@ use Zend\EventManager\EventInterface;
  *
  * @package   Protec\BlooperReel
  * @author    Protec Innovations <support@protecinnovations.co.uk>
- * @copyright 2013 - 2014 Protec Innovations
+ * @copyright 2013 - 2015 Protec Innovations
  */
 class Module
 {

@@ -10,7 +10,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package   Protec\BlooperReel\Recorder
  * @author    Protec Innovations <support@protecinnovations.co.uk>
- * @copyright 2014 Protec Innovations
+ * @copyright 2014 - 2015 Protec Innovations
  */
 class RecorderFactory implements FactoryInterface
 {
