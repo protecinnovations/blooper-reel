@@ -3,6 +3,7 @@
 namespace Protec\BlooperReel\Strategy;
 
 use Protec\BlooperReel\Recorder\RecorderInterface;
+use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
@@ -10,6 +11,7 @@ use Zend\Mvc\View\Http\ExceptionStrategy as ZendExceptionStrategy;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ResponseInterface;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -63,7 +65,15 @@ class ExceptionStrategy extends ZendExceptionStrategy implements
 
                 $this->getRecorder()->save($identifier, $whoops_output);
 
-                $view_model = new ViewModel(
+                $request = $event->getRequest();
+
+                if ($request instanceof HttpRequest && $request->isXmlHttpRequest()) {
+                    $view_model = new JsonModel();
+                } else {
+                    $view_model = new ViewModel();
+                }
+
+                $view_model->setVariables(
                     [
                         'error_identifier' => $identifier,
                         'whoops' => $whoops_output,
